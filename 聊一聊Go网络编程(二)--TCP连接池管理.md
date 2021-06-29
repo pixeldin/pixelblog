@@ -4,7 +4,6 @@ date: 2021-05-16
 
 categories:
 - Go
-- 后端
 - 网络编程
 tags:
 - TCP
@@ -12,8 +11,8 @@ tags:
 
 showSocial: false
 autoThumbnailImage: false
-thumbnailImagePosition: "top"
-thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/flw.jpg
+thumbnailImagePosition: "left"
+thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/net-2.png
 ---
 
 上一篇我们聊到在Go中是如何发起一个TCP连接的，以及列举一个全双工的Demo，这次接着填补上一节留下的坑，连接池管理。

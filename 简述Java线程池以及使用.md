@@ -4,9 +4,9 @@ date: 2019-07-15
 
 categories:
 - Java
-- 线程
+- 并发
 tags:
-- 后端
+- 线程
 showSocial: false
 ---
 线程池可以避免频繁创建销毁线程，提高性能。常见如数据库的连接池。

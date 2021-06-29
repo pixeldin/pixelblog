@@ -4,11 +4,12 @@ date: 2021-05-15
 
 categories:
 - Go
-- 后端
 - 网络编程
 tags:
 - TCP
 showSocial: false
+thumbnailImagePosition: "left"
+thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/net-1.png
 ---
 
 在网络分层的七层协议中，我们知道TCP处于HTTP层的下方，本质上HTTP连接是基于底层的TCP连接建立的。 
