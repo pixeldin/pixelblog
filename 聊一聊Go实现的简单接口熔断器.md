@@ -1,6 +1,6 @@
 ---
-title: "聊一聊Go实现的简单接口熔断器: Circuit Breaker"
-date: 2021-07-29
+title: "聊一聊Go实现的接口熔断器: Circuit Breaker"
+date: 2021-07-31
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
 thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/cbk/cbk_front.png
@@ -15,7 +15,7 @@ tags:
 metaAlignment: center
 ---
 
-在微服务链路中，熔断是指在短时间内接口出现**多次异常/超时**(**错误率过高**)，通过对接口**快速失败**，避免上游反复重试或频繁请求以至于下游被压垮的一种保护策略。
+在微服务链路中，熔断是指在短时间内接口出现**多次异常/超时**(**错误率过高**)，通过对接口**快速失败**，避免上游反复重试以至于下游被压垮的一种保护策略。
 <!--more-->
 
 ![熔断器](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/cbk/cbk_front.png)
