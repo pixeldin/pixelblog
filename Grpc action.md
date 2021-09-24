@@ -6,11 +6,11 @@ categories:
 - Go
 - 并发
 tags:
-- social
+- RPC
 showSocial: false
 ---
 
-RPC：远程过程调用
+RPC：远程过程调用简写
 <!--more-->
 
 ### HTTP发展
