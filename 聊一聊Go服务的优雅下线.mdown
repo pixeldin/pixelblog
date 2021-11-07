@@ -1,14 +1,15 @@
 ---
 title: "聊一聊Go服务的优雅下线"
-date: 2021-09-27
+date: 2021-09-29
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
-thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/go-gin/barrier.png
+thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/graceful/lastgreen.png
 categories:
 - Go
 - HA
 tags:
 - 服务治理
+- 进程通信
 - 优雅关闭
 
 metaAlignment: center
@@ -16,7 +17,7 @@ metaAlignment: center
 
 从高可用到优雅关闭/重启，细化到程序下线/重启等操作，在Go里面有哪些处理方式呢？今天我们来聊聊go程序的优雅关闭
 <!--more-->
-![安检](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/go-gin/airport45.jpg)
+![recover](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/graceful/recover.png)
 
 ### 前言
 最近服务高可用的重要性越来越大，高可用通常指的是通过故障转移到冗余模块，如主备切换等相应操作，用来保证系统对外提供可用性，而细化到程序下线/重启等操作，在Go里面有哪些处理方式呢？今天我们来聊聊Go程序的优雅关闭与重启，如何让程序在关闭或者重启之前对旧的连接进行处理，尽量做到无感知切换。
