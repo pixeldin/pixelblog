@@ -1,5 +1,5 @@
 ---
-title: "聊一聊Go服务的优雅下线"
+title: "聊一聊Go服务的优雅处理(一)--优雅下线"
 date: 2021-09-29
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
