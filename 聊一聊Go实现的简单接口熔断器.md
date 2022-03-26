@@ -1,6 +1,6 @@
 ---
 title: "聊一聊Go实现的接口熔断器: Circuit Breaker"
-date: 2021-07-31
+date: 2022-01-31
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
 thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/cbk/cbk_front.png
@@ -304,6 +304,8 @@ cbk.cbkErrRate = 0.5
 ## 总结
 至此，一个简单的熔断器实现就完成了，刚开始其中不少概念容易把自己绕进去，后来结合场景模拟和代码调试，以及开篇的那张状态转移图片，就方便理解啦。虽然现在很多现成的组件都是开箱即用，但是只要肯花点心思其实其内部实现原理并非那么深不可测。
 
+## 项目地址
+https://github.com/pixeldin/cbk-s1mpl3
 ## 参考资料
 **Circuit Breaker Pattern**  
 https://docs.microsoft.com/en-us/previous-versions/msp-n-p/dn589784(v=pandp.10)  

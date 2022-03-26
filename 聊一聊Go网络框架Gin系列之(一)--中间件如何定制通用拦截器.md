@@ -1,6 +1,6 @@
 ---
 title: "聊一聊Go网络框架Gin之如何定制通用拦截器"
-date: 2021-08-27
+date: 2021-10-15
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
 thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/go-gin/barrier.png

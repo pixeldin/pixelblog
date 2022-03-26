@@ -1,6 +1,6 @@
 ---
 title: "聊一聊Go服务的优雅处理(一)--优雅下线"
-date: 2021-09-29
+date: 2021-11-02
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
 thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/graceful/lastgreen.png
