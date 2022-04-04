@@ -1,6 +1,6 @@
 ---
 title: "聊一聊Go的协程信息和如何预防泄露"
-date: 2022-02-17
+date: 2022-03-17
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
 thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/routine.PNG

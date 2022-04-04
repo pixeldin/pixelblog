@@ -1,6 +1,6 @@
 ---
 title: "聊一聊Go实现的接口熔断器: Circuit Breaker"
-date: 2022-01-31
+date: 2022-02-25
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
 thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/cbk/cbk_front.png

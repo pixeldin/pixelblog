@@ -1,6 +1,6 @@
 ---
 title: "聊一聊TCP流中的组包拆包"
-date: 2022-02-17
+date: 2022-02-04
 
 categories:
 - Go
@@ -8,11 +8,11 @@ categories:
 tags:
 - TCP
 showSocial: false
-thumbnailImagePosition: "left"
-thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/tcp-pack/tcp-steam-cover.png
+thumbnailImagePosition: "top"
+thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/tcp-pack/tcp-cover.png
 ---
 
-众所周知，包体传输是网络通信中不可或缺的一部分，无论是应用层HTTP包的```header```或者```body```，都是对数据的分组与拆解。
+众所周知，包体传输是网络通信中不可或缺的一部分，无论是应用层HTTP包的```header```或者```body```，还是传输层TCP的流式数据，都是对数据的分组与拆解。
 <!--more-->
 
 ## 前言
