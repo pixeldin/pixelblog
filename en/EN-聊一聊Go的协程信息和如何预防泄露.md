@@ -19,7 +19,8 @@ Goroutines are a common concept in Go, which starts and ends with the life cycle
 ![协程通信](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/road.PNG)
 
 ## Foreword  
-About the underlying concept of goroutine, GMP model, etc., it has been analyzed in the previous blog. If you are interested, you can read the previous article.[聊一聊操作系统线程调度与Go协程](https://pixelpig.tech/2020/10/%E8%81%8A%E4%B8%80%E8%81%8A%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6%E4%B8%8Ego%E5%8D%8F%E7%A8%8B/)
+About the underlying concept of goroutine, GMP model, etc. It has been analyzed in the previous blog.   
+If you are interested, you can read the previous article [Talk about Go: The operating system's thread scheduling and Goroutines](/en/2020/10/talk-about-go-the-operating-systems-thread-scheduling-and-goroutines/)
 
 ## Leak case
 The reason why goroutine leaks are common is that sometimes we ignore the problem until the resource load is abnormal.
@@ -214,7 +215,7 @@ For example this is a production case log output:
 Often the logging framework strives to have the lowest impact on business performance. Since there are performance concerns, how does it obtain the goroutine id?  
 In fact, in Go, there is a g pointer in the system thread structure bound to each goroutine. After getting the information of the g pointer, according to the offset of the g pointer structure (note that different go versions may be different ) to specify the fetch id.
 ### Compilation Method
-The G pointer bound by the goroutine is here for reference[《Go高级编程》的做法](https://chai2010.cn/advanced-go-programming-book/ch3-asm/ch3-08-goroutine-id.html)
+The G pointer bound by the goroutine is here for reference[《Go高级编程》](https://chai2010.cn/advanced-go-programming-book/ch3-asm/ch3-08-goroutine-id.html)
 
 ```go
 // Record the offset of each version
