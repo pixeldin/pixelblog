@@ -1,6 +1,7 @@
 ---
 title: "浅谈 Java单例模式"
 date: 2019-08-11
+draft: true
 
 categories:
 - Java

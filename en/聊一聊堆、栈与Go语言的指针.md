@@ -1,6 +1,7 @@
 ---
 title: "聊一聊堆、栈与Go语言的指针"
 date: 2020-04-16
+draft: true
 <!-- thumbnailImagePosition: left
 thumbnailImage: /img/go-context.jpg -->
 thumbnailImagePosition: left

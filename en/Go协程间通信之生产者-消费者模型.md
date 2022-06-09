@@ -1,6 +1,8 @@
 ---
 title: "Go协程间通信之生产者-消费者模型"
 date: 2021-01-18T03:40:05+08:00
+draft: true
+
 categories:
 - Go
 - 并发

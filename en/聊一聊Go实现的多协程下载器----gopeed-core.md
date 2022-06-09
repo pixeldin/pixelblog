@@ -1,5 +1,6 @@
 ---
 title: "聊一聊Go实现的多协程下载器: gopeed-core"
+draft: true
 date: 2021-06-29
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
