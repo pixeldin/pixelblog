@@ -12,12 +12,12 @@ thumbnailImagePosition: "left"
 thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/net-1.png
 ---
 
-在网络分层的七层协议中，我们知道TCP处于HTTP层的下方，本质上HTTP连接是基于底层的TCP连接建立的。 
+在网络分层的七层协议中，我们知道TCP处于HTTP层的下方，本质上HTTP应用层包体解析是基于底层的TCP连接建立的。   
 <!--more-->
 
 
 ### TCP协议概要
-在网络分层的七层协议中，我们知道TCP处于HTTP层的下方，本质上HTTP连接是基于底层的TCP连接建立的。  
+在网络分层的七层协议中，我们知道TCP处于HTTP层的下方，本质上HTTP包体解析是基于底层的TCP连接建立的。  
 **TCP连接标识**: 计算机之间在建立网络连接，也就是俗称的握手，本质上是两个文件句柄的关联，即fd，每个网络连接由四个属性唯一标识：<源IP,源端口,目标IP,目标端口>，因此一台机器的连接数受文件句柄```ulimit```的限制。   
 **操作系统接口**: Socket套接字
 
