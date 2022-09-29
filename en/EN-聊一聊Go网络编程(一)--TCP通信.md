@@ -1,37 +1,35 @@
 ---
-title: "聊一聊Go网络编程(一)--TCP通信"
+title: "Talk about Go: Network programming--TCP Communication"
 date: 2021-05-15
-draft: true
 
 categories:
 - Go
-- 网络编程
-tags:
+- Network
 - TCP
+tags:
+- Talk about Go
+
 showSocial: false
-thumbnailImagePosition: "left"
-thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/net-1.png
+autoThumbnailImage: false
+
 ---
 
-在网络分层的七层协议中，我们知道TCP处于HTTP层的下方，本质上HTTP连接是基于底层的TCP连接建立的。 
+In the seven-layer protocol of network layering, we know that TCP is below the HTTP layer. In essence, the HTTP packet body parsing is established based on the underlying TCP connection.
 <!--more-->
 
 
-### TCP协议概要
-在网络分层的七层协议中，我们知道TCP处于HTTP层的下方，本质上HTTP连接是基于底层的TCP连接建立的。  
-**TCP连接标识**: 计算机之间在建立网络连接，也就是俗称的握手，本质上是两个文件句柄的关联，即fd，每个网络连接由四个属性唯一标识：<源IP,源端口,目标IP,目标端口>，因此一台机器的连接数受文件句柄```ulimit```的限制。   
-**操作系统接口**: Socket套接字
+## TCP Protocol Summary  
+**TCP Connection Distinct**: The establishment of a network connection between computers, also known as handshake, is essentially the association of two file handles, namely fd, each network connection is uniquely identified by four attributes: `<source IP, source port, destination IP, destination port >`, so the number of connections to a machine is limited by the file handle ```ulimit```.   
+**OS Socket**: Operating system sockets serve as endpoints for establishing a two-way network communication link between server-side and client-side programs.
 
-#### 长连接KeepAlive的对比
+### Explanation of KeepAlive in different scenarios
 - **HTTP keepalive**  
-众所周知，HTTP连接是无状态的，通常连接用完就销毁，开启keepalive可以告知其保持连接一段时间，避免频繁连接重建。
+As we all know, HTTP connections are stateless. Usually, the connection is destroyed when it is used up. Turning on keepalive can tell it to keep the connection for a period of time and avoid frequent connection reconstruction.
 - **TCP keepalive**  
     > Many existing TCP protocols support this way of error handling by defining some sort of heartbeat mechanism that requires each endpoint to send PING/PONG probes at a regular interval in order to detect both networking problems, as well as service health.
-    
-    TCP有别于HTTP，本身就是为了长连接而设定的，keepalive用于活性检测，可以理解为通过定义某种类型的心跳机制来支持这种错误处理方式，该心跳机制要求每个端点以规则的间隔发送ping/pong探测，以便检测网络问题以及服务健康。
 
-### Linux网络参数
-在Linux机器可以通过下列网络参数设置TCP保活机制：
+### Linux Network parameters
+On Linux machines, the TCP keepalive mechanism can be set via the following network parameters:
 ```
   # cat /proc/sys/net/ipv4/tcp_keepalive_time
   7200
@@ -42,22 +40,21 @@ thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/n
   # cat /proc/sys/net/ipv4/tcp_keepalive_probes
   9
 ```
-**上述是默认设置，表示初始创建连接在两小时(7200秒)之后，每75秒重新发送一次。如果连续9次未收到ACK响应，则连接被标记为断开。**
+The above is the default setting, which means that **the initial connection creation will be resent every 75 seconds after two hours (7200 seconds). If no ACK response is received 9 times in a row, the connection is marked as broken.**
 
-### Go API介绍
-在Go原生net包中，有下列函数可以干涉TCP连接的保活机制：
+### Code Demo
+In the Go native net package, the following functions can set with the keep-alive mechanism of TCP connections:  
 - ```func (c *TCPConn) SetKeepAlive(keepalive bool) error```  
-    是否开启连接检测
+    whether to enable connection detection
 - ```func (c *TCPConn) SetKeepAlivePeriod(d time.Duration) error```  
-    连接检测间隔，如果不设置默认使用所在操作系统参数设置
+    connection detection interval, by default will use the operating system parameter settings
 
 ----
 
-### 用例Demo
-下面我们先用一个TCP连接demo进行交互，之后我们再用连接池把TCP连接进行集中管理。
+Next, we first use a TCP connection demo to interact, and then we use the connection pool to centrally manage the TCP connection at next time.
 
-#### 传输结构
-简单定义两个结构用于客户端与服务端交互，传输协议用**json**示范
+**Transmission Structure**  
+We define two structures for the interaction between the client and the server, and the transmission protocol is demonstrated by **json**
 ```go
 type Message struct {
 	Uid string
@@ -71,7 +68,7 @@ type Resp struct {
 }
 ```
 
-#### server端
+**Server side**  
 ```golang
 const TAG = "server: hello, "
 
@@ -82,7 +79,7 @@ func transfer(conn net.Conn) {
 		conn.Close()
 	}()
 
-	// 设置10秒关闭连接
+	// set 10 seconds to close the connection
 	//conn.SetDeadline(time.Now().Add(10 * time.Second))
 
 	for {
@@ -90,7 +87,6 @@ func transfer(conn net.Conn) {
 
 		if err := json.NewDecoder(conn).Decode(&msg); err != nil && err != io.EOF {
 			log.Printf("Decode from client err: %v", err)
-			// todo... 仿照redis协议写入err前缀符号`-`，通知client错误处理
 			return
 		}
 
@@ -108,7 +104,7 @@ func transfer(conn net.Conn) {
 
 func ListenAndServer() {
 	log.Print("Start server...")
-	// 启动监听本地tcp端口3000
+	// start listening on local tcp port 3000
 	listen, err := net.Listen("tcp", "0.0.0.0:3000")
 	if err != nil {
 		log.Fatal("Listen failed. msg: ", err)
@@ -125,40 +121,36 @@ func ListenAndServer() {
 }
 ```
 
-#### client端
-定义一个Conn连接类型，用来包装原生tcp和其他额外属性，包括上下文，结果通道等。
+**Client Side**  
+Defines a Conn connection type that wraps native tcp and other extra properties, including context, result channel, etc.
 ```go
 type IConn interface {
 	Close() error
 }
 
-// Conn 对应每个连接
+// for each connection
 type Conn struct {
-	addr    string              // 地址
-	tcp     *net.TCPConn        // tcp连接实例, 可以是其他类型
+	addr    string              
+	tcp     *net.TCPConn        // tcp connection can be any types implement of database(Redis,MySQL,Kafka)
 	ctx     context.Context
 	writer  *bufio.Writer
-	cnlFun  context.CancelFunc // 用于通知ctx结束
-	retChan *sync.Map          // 存放通道结果集合的map, 属于统一连接
+	cnlFun  context.CancelFunc // tsed to notify the end of ctx
+	retChan *sync.Map          // the map that stores the channel result set, which belongs to the unified connection
 	err     error
 }
 
-// 为Conn实现Close()函数签名 关闭连接, 关闭消息通道
+// Implement the Close() function signature for Conn to close the connection, close the message channel
 func (c *Conn) Close() (err error) {
-	// 执行善后
 	if c.cnlFun != nil {
 		c.cnlFun()
 	}
-
-	// 关闭tcp连接
+	
 	if c.tcp != nil {
 		err = c.tcp.Close()
 	}
-
-	// 关闭消息通道
 	if c.retChan != nil {
 		c.retChan.Range(func(key, value interface{}) bool {
-			// 根据具体业务断言转换通道类型
+			// convert the channel type according to the specific business assertion
 			if ch, ok := value.(chan string); ok {
 				close(ch)
 			}
@@ -169,7 +161,7 @@ func (c *Conn) Close() (err error) {
 }
 ```
 
-定义连接的配置项option结构
+**Defines the option of the connection**
 ```go
 type Option struct {
 	addr        string
@@ -180,10 +172,10 @@ type Option struct {
 }
 ```
 
-紧接着创建连接代码如下：
+Then create the connection code as follows:
 ```go
 func NewConn(opt *Option) (c *Conn, err error) {
-	// 初始化连接
+	// initialize connection
 	c = &Conn{
 		addr:    opt.addr,
 		retChan: new(sync.Map),
@@ -198,7 +190,7 @@ func NewConn(opt *Option) (c *Conn, err error) {
 		}
 	}()
 
-	// 拨号
+	// dial
 	var conn net.Conn
 	if conn, err = net.DialTimeout("tcp", opt.addr, opt.dialTimeout); err != nil {
 		return
@@ -219,50 +211,48 @@ func NewConn(opt *Option) (c *Conn, err error) {
 		return
 	}
 
-    // 创建上下文管理
+    // create context management
 	c.ctx, c.cnlFun = context.WithCancel(context.Background())
 
-	// 异步接收结果到相应的结果集
+	// receive results asynchronously to the corresponding result set
 	go receiveResp(c)
 
 	return
 }
 ```
 
-#### 异步接收结果
-来看下异步接收结果的代码，其中的```receiveResp()```函数，主要进行异步轮询，有几个作用：
-- 感知上下文关闭，通常是连接的cancel()被执行
-- 接收server端的数据并写入结果通道```retChan```，其类型是并发安全的```sync.Map```
-- 监听server的错误，对异常情况关闭连接
+**Receive results asynchronously**  
+The ```receiveResp()``` function, which mainly performs asynchronous polling, has several functions:
+- Aware of context closure, usually the connection's cancel() is executed
+- Receive data from the server and write to the result channel ```retChan```, whose type is concurrency-safe ```sync.Map```
+- Listen for server errors and close connections for exceptions
 ```go
-// receiveResp 接收tcp连接的数据
+// receive the data from tcp connection
 func receiveResp(c *Conn) {
 	scanner := bufio.NewScanner(c.tcp)
 	for {
 		select {
 		case <-c.ctx.Done():
-			// c.cnlFun() 被执行了, 如连接池关闭
+			// c.cnlFun() is executed, if the connection pool is closed
 			return
 		default:
 			if scanner.Scan() {
-				// 读取数据
 				rsp := new(body.Resp)
 				if err := json.Unmarshal(scanner.Bytes(), rsp); err != nil {
 					return
 				}
-				// 响应id与请求id对应
+				// the response id corresponds to the request id
 				uid := rsp.Uid
 				if load, ok := c.retChan.Load(uid); ok {
 					c.retChan.Delete(uid)
-					// 消息通道
+					// message channel
 					if ch, ok := load.(chan string); ok {
 						ch <- rsp.Ts + ": " + rsp.Val
-						// 在写入端关闭
+						// close on write side
 						close(ch)
 					}
 				}
 			} else {
-				// 错误, 合并了EOF
 				if scanner.Err() != nil {
 					c.err = scanner.Err()
 				} else {
@@ -276,18 +266,11 @@ func receiveResp(c *Conn) {
 }
 ```
 
-#### 发送请求
+**Sending request**  
 ```go
-/*
-	Send 发送请求, 返回具体业务通道
-	注意如果入参的msg消息体是interface{}类型, 最好根据业务进行
-	类型断言校验, 避免server端解析出错，返回err值用于后续判断
-	是否归还连接池。
-*/
 func (c *Conn) Send(ctx context.Context, msg *body.Message) (ch chan string, err error) {
 	ch = make(chan string)
 	c.retChan.Store(msg.Uid, ch)
-	// 请求
 	js, _ := json.Marshal(msg)
 
 	_, err = c.writer.Write(js)
@@ -296,19 +279,21 @@ func (c *Conn) Send(ctx context.Context, msg *body.Message) (ch chan string, err
 	}
 
 	err = c.writer.Flush()
-	// 连接不关闭, 后续可以放入连接池
+	// the connection is not closed, could be put into the connection pool later
 	//c.tcp.CloseWrite()
 	return
 }
 ```
 
-#### 实例：
-1. 启动server端监听:
+### Running Steps
+1. Start server-side listening:
+
 ```
 === RUN   TestListenAndServer
 2021/05/10 16:58:20 Start server...
 ```
-2. 发起请求：
+2. Make a request：
+
 ```go
 var OPT = &Option{
 	addr:        "0.0.0.0:3000",
@@ -346,7 +331,9 @@ func TestSendMsg(t *testing.T) {
 	t.Log("finished")
 }
 ```
-3. 客户端输出如下：
+
+3. Client output：  
+
 ```
 === RUN   TestSendMsg
     TestSendMsg: conn_test.go:56: rec1: : pixelpig!
@@ -357,14 +344,15 @@ PASS
 ```
 
 ----
-### 超时与池化管理
-上面是一个比较简单的点对点交互，后续其实还可以考虑连接交互超时的情况：
-1. 虽然连接结果是异步响应，但是我们有必要对响应进行超时判断，防止单个连接持续阻塞
-2. 我们要考虑复用，即把健康的连接放入连接池进行管理。
 
-#### 超时判断
-超时判断业界有许多做法，比较常见的是用一个```select{}```块与```time.After()```即可。  
-下面我们来看下常见的实现：
+### Timeout and Pooling
+The above is a relatively simple point-to-point interaction. In fact, the connection interaction timeout can also be considered later:
+1. Although the connection result is an asynchronous response, it is necessary for us to time out the response to prevent a single connection from continuing to block.
+2. We need to consider reuse, that is, put healthy connections into the connection pool for management.
+
+**Timeout judgment**  
+There are many ways of judging timeout, the more common one is to use a ```select{}``` block and ```time.After()```.
+Let's take a look at the common implementations:
 ```go
 rec3, err := c.Send(context.Background(), msg)
 if err == nil {
@@ -380,7 +368,9 @@ if err == nil {
 	t.Error(err)
 }
 ```
-超时输出如下：
+
+**Example：**
+
 ```
 === RUN   TestSendMsg
     TestSendMsg: conn_test.go:56: rec1: : pixelpig!
@@ -389,16 +379,16 @@ if err == nil {
 FAIL
 ```
 
-#### 连接池管理
-这里要考虑的情况稍微复杂点，可以先把难点列出来再逐个击破：
-1. 池子的连接数上限
-2. 空闲连接数更新
-3. 连接获取与归还
-4. 连接关闭
+**Pool Management**  
+The situation to be considered here is a little more complicated. You can list the difficulties first and then break them one by one:
+1. The maximum number of connections in the pool
+2. Update the number of idle connections
+3. Connection acquisition and return
+4. Connection closed
 
-关于池化操作篇幅可能较长，详解在本系列的下一篇《聊一聊Go网络编程--TCP连接管理(二)》叙述。
+The length of the pooling operation may be long, and the detailed explanation is described in the next part of this series: [Talk about Go: TCP Connection Pool Management](/en/2021/05/talk-about-go-network-programming-tcp-connection-management/)
 
-### 参考链接
+### Reference Link
 **Notes on TCP keepalive in Go**  
 https://thenotexpert.com/golang-tcp-keepalive/  
 **Using TCP keepalive under Linux**  

@@ -6,9 +6,11 @@ thumbnailImagePosition: left
 thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/routine.PNG
 categories:
 - Go
-- Goroutine
+- backend
 tags:
 - Talk about Go
+- Goroutine
+- pprof
 
 metaAlignment: center
 ---

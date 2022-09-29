@@ -70,7 +70,6 @@ func MakeFrame(pl string) []byte {
 }
 ```
 
-d
 ### Packing and Unpacking
 Whether in big-endian or little-endian mode, the information obtained from the serialized byte stream after deserialization is also called **packet**. The next step is to semantically parse the packet.   
 We all know that in a TCP stream, data packets are ordered, but in a pipeline of data, how does the application layer know the start and end of the data, that is, how to distinguish whether a certain piece of data belongs to the previous request or the next request , This is often referred to as unpacking and sticking. There are generally two solutions:   
