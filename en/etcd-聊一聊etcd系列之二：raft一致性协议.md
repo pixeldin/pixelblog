@@ -1,5 +1,5 @@
 ---
-title: "Talk about etcd Series (Part2): the raft consistency protocol"
+title: "Talk about etcd (Part2): the raft consistency protocol"
 date: 2022-06-03
 
 categories:
@@ -22,8 +22,8 @@ Today, let’s talk about the consensus mechanism of etcd, the raft protocol.
 ## What problem does it solve
 Before entering etcd's raft, let's talk about what the consistency of distributed systems is and what problems the raft protocol solves.
 ### Different Semantics of Consistency
-In fact, in the ACID transaction characteristics, consistency C is more like a kind of energy conservation or quality conservation, such as transfer, snap-up, and the amount of items will not disappear out of thin air or appear redundant.  
-In the distributed field, **distributed consistency often refers to consensus, which means that multiple nodes reach an agreement (either everyone is wrong, or one is right)**, the difference is if it is under the semantics of ACID transactions Consistency, generally refers to strong consistency.
+In fact, in the ACID transaction characteristics, consistency as C is more like a kind of energy conservation or quality conservation, such as transfer, snap-up, and the amount of items will not disappear out of thin air or appear redundant.  
+In the distributed field, **distributed consistency often refers to consensus, which means that multiple nodes reach an agreement (either everyone is wrong, or everyone is right)**, the difference is if it is under the semantics of ACID transactions Consistency, generally refers to strong consistency.
 
 ## How it is solved
 etcd internally achieves consistency through election and record synchronization.  
@@ -91,7 +91,7 @@ func (r *raft) appendEntry(es ...pb.Entry) (accepted bool) {
 ### Log Compression
 Due to the incremental addition of the operation update log, the raft node will periodically archive and compress the log version after reaching an agreement, which is somewhat similar to the AOF and Snapshot backup strategies of Redis. One compression can free up space, reduce storage space and avoid a large number of operation logs. Replaying is also convenient for nodes that lag behind too many logs to quickly catch up with the leader.
 
-Among them, raft startup will have an associated member ``storage``` to store the log data collection, and the specific related operations are implemented in the ``raft.Storage``` interface of etcd. The core members are as follows:  
+Among them, raft startup will have an associated member ```storage``` to store the log data collection, and the specific related operations are implemented in the ```raft.Storage``` interface of etcd. The core members are as follows:  
 ```go
 type bootstrappedRaft struct {
 	lg        *zap.Logger

@@ -1,5 +1,5 @@
 ---
-title: "Talk about etcd Series (Part1): Hierarchy Overview with bird's eye view"
+title: "Talk about etcd (Part1): Hierarchy Overview with bird's eye view"
 date: 2022-05-17
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
@@ -35,7 +35,7 @@ Hierarchical design is the basic idea of software development. etcd also adopts 
 ### Conformance Protocol
 When it comes to distributed storage, distributed protocols are naturally inseparable. The bottom layer of etcd relies on the **raft** consensus algorithm to ensure consistency, and adopts the **election strategy** to regularly update the current status of each node.
 ### Way of communication
-The communication method between etcd nodes is updated and iterative (v2->v3). v2 uses HTTP/1.X protocol and communicates based on RESTful API; v3 adds HTTP/2.x grpc protocol support on the basis of compatibility with v2. In the multiplexing scenario, the transmission efficiency is improved, based on[Stream API](https://etcd.io/docs/v3.5/learning/design-client/) with long connection for activity detection.  
+The communication method between etcd nodes is updated and iterative (v2->v3). v2 uses HTTP/1.X protocol and communicates based on RESTful API; v3 adds HTTP/2.x grpc protocol support on the basis of compatibility with v2. In the multiplexing scenario, the transmission efficiency is improved, based on [Stream API](https://etcd.io/docs/v3.5/learning/design-client/) with long connection for activity detection.  
 ![image](https://etcd.io/docs/v3.5/learning/img/client-balancer-figure-06.png)
 In addition, etcd exposes a friendly API to shield the underlying complex application logic and provide a logical cluster view of multiple physical machines.
 
@@ -52,7 +52,7 @@ The entire technology stack of etcd can actually be expanded vertically and hori
 ![mindmap](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/etcd/raft/en-etcd-mind.png)
 
 ## Reference link
-- etcd docs 
+- etcd docs  
 https://etcd.io/docs/v3.5/learning/
 - Deep Dive: etcd  
 https://www.youtube.com/watch?v=DrtdrdwDpZE
