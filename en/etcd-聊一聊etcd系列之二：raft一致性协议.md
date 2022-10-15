@@ -261,7 +261,7 @@ func (s *EtcdServer) Range(ctx context.Context, r *pb.RangeRequest) (*pb.RangeRe
 }
 ```
 
-### Summary
+## Summary
 This is some understanding of etcd's internal consensus mechanism in the past few days, mainly involving concepts such as election state transfer and log compression. The next chapter in this series will talk about how etcd nodes communicate.
 ## Reference link
 - raft MessageType  
