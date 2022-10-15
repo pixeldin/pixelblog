@@ -3,7 +3,7 @@ title: "聊一聊etcd系列之三：节点通信协议"
 date: 2022-06-23
 thumbnailImagePosition: left
 <!-- thumbnailImage: /img/go-context.jpg -->
-thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/etcd/raft/s0-%E8%84%91%E5%9B%BE.png
+thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/etcd/raft/kv-process.png
 categories:
 - Go
 - 后端
@@ -18,7 +18,7 @@ metaAlignment: center
 etcd在微服务领域使用场景十分普遍，经常用于作为一个注册中心，提供服务注册与发现。近期梳理了etcd的一些内部结构与依赖组件，今天来聊一聊etcd的节点通信协议。
 <!--more-->
 
-![etcd-cover-tree](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/etcd/raft/etcd-tree.png)
+![etcd-part3-cover](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/etcd/raft/etcd-part3-cover.png)
 
 ## 前言
 etcd在微服务领域使用场景十分普遍，经常用于作为一个注册中心，提供服务注册与发现常见的比如K8S框架就以etcd作为基础组件进行内部交互。前面提到etcd通过分层对各个模块进行实现，今天我们来进入网络部分，本篇将聊一聊etcd如何对外提供的API，从客户端和服务端来逐步分析。

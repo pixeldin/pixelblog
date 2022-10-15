@@ -1,5 +1,5 @@
 ---
-title: "Talk about etcd (Part3): the Communication Protocol from Client to Server"
+title: "Talk about etcd (Part3): the Communication Protocol between Client and Server"
 date: 2022-06-23
 
 categories:
@@ -16,7 +16,7 @@ As mentioned earlier, etcd implements each module through layers. This time we w
 Today, let’s talk about the communication way of etcd inside the server and client role.
 <!--more-->
 
-![etcd-cover-raft](https://images.pexels.com/photos/966927/pexels-photo-966927.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+![etcd-part3-cover](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/etcd/raft/etcd-part3-cover.png)
 
 ## What problem does it solve
 ### Communication Efficiency
@@ -97,7 +97,7 @@ func parseKeyRequest(r *http.Request, clock clockwork.Clock) (etcdserverpb.Reque
 }
 ```
 It is worth mentioning that etcd has officially used the v3 mode of communication by default after the v3.4 version, so we will focus on analyzing the v3 version of the code and describe it separately from the client and the server.
-### Client
+### Client Side
 The v3 client encapsulates a grpc connection for internal communication of the rpc service
 ```go
 // Client provides and manages an etcd v3 client session.
@@ -160,18 +160,18 @@ func (c *kVClient) DeleteRange(ctx context.Context, in *DeleteRangeRequest, opts
 }
 ```
 
-### 服务端
-服务端的组件较为复杂，在梳理内部控件通信之前，有必要先了解各个组件充当的角色是什么。
-服务端解决的问题是：
-- 接收客户端的请求并对节点进行分发
-- 感知集群成员变动，对成员通知
-- 同步或者启动恢复快照
-#### 服务端拦截器
-我们在前面客户端组件提到一个```KVServer```，其实etcd还对其包了一层拦截器，就是```quotaKVServer```
+### Server Side
+The components on the server side are more complex. Before sorting out the internal control communication, it is necessary to understand the role of each component.  
+The problem solved by the server is:
+- Receive requests from clients and distribute to nodes
+- Sensing cluster member changes and notifying members
+- Synchronize or initiate recovery snapshots
+#### Server Interceptor
+We mentioned a ```KVServer``` in the previous client component. In fact, etcd also wraps a layer of interceptor for it, which is ```quotaKVServer```
 ```go
 type quotaKVServer struct {
 	pb.KVServer
-	// 辅助功能
+	// Accessibility
 	qa quotaAlarmer
 }
 type quotaAlarmer struct {
@@ -186,22 +186,24 @@ func NewQuotaKVServer(s *etcdserver.EtcdServer) pb.KVServer {
 	}
 }
 ```
-这个拦截器的作用是对客户端请求进行空间检测，对每个请求计算Key-Vaule资源消耗空间，服务端统计剩余空间以此来做告警，如果超过则抛出错误：
+The role of this interceptor is to perform space detection on client requests, calculate the key-vaule resource consumption space for each request, and the server will count the remaining space as an alarm. If it exceeds, an error will be thrown:  
 ```go
 ErrGRPCNoSpace       = status.New(codes.ResourceExhausted, "etcdserver: mvcc: database space exceeded").Err()
 ```
-如果集群出现这种情况，官方文档也给出了建议：  
+If this happens to the cluster, the official documentation also gives suggestions:  
 [fix mvcc: database space exceeded](https://etcd.io/docs/v3.4/faq/#what-does-mvcc-database-space-exceeded-mean-and-how-do-i-fix-it)
-- 历史版本压缩
-- 文件碎片整理
-#### 接口关系
-在```go```的语言规则中，使用组合替代继承，```go```的接口采用隐式实现，raft节点内部通信主要是通过定义```channel```成员进行消息传播，比如外部消息到底层log的转换。而涉及跨机器节点的消息体则使用http客户端发送，其数据流图如下：
+- Historical version compression
+- File defragmentation
+#### Interface Relationship
+In the language rules of go, use composition instead of inheritance, the interface of go is implicitly implemented, and the internal communication of raft nodes is mainly through the definition of ```channel``` members for messages Propagation, such as the conversion of external messages to the underlying log. The message body involving cross-machine nodes is sent by the http client.
+
+The data flow diagram is as follows:
 ![etcd-server-flow](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/etcd/raft/etcd-server-flow.png)
 
 ----
-```etcdserver```除了对客户端暴露API使用之外，在启动时刻还注册监听了内部成员通信的一下逻辑，接下来我们看下server端内部逻辑。
-#### peer-通信组件
-etcd集群使用peer作为单点结构来做跨网络通信，几个核心的成员函数如下，内部封装了节点间的网络请求，比如提交快照给其他节点：
+```etcdserver``` In addition to exposing the API to the client, the logic for monitoring the communication of internal members is also registered at startup time. Next, let's look at the internal logic of the server.
+#### Communication Component: peer
+The etcd cluster uses peer as a single-point structure for cross-network communication. Several core member functions are as follows, which internally encapsulate network requests between nodes, such as submitting snapshots to other nodes:
 ```go
 type Peer interface {
     send(m raftpb.Message)
@@ -209,8 +211,8 @@ type Peer interface {
     update(urls types.URLs)
 }
 ```
-#### Transporter接口
-etcd集群则需要维护一个```peer```节点列表，etcd的做法是选择往上抽取一层，使用```Transport```来维护```peer```列表，通过```Transport```实现了```Transporter```接口来对```peer```成员进行管理，```Transporter```接口主要是对```peer```成员进行更新维护。
+#### Transporter Interface
+The etcd cluster needs to maintain a ```peer``` node list. The method of etcd is to choose to extract one layer up, and use ```Transport``` to maintain the ```peer``` list, through ```Transport``` implements the ```Transporter``` interface to manage the ```peer``` members, and the ```Transporter``` interface mainly updates and maintains the ```peer``` members.
 ```go
 type Transporter interface {
     // ...
@@ -223,7 +225,7 @@ type Transporter interface {
 }
 ```
 
-```Transporter```的实现体```Transport```
+```Transporter``` implement by ```Transport```
 ```go
 type Transport struct {
 	//...
@@ -233,25 +235,25 @@ type Transport struct {
 	Raft        Raft       // raft state machine, to which the Transport forwards received messages and reports status
 	Snapshotter *snap.Snapshotter
 	// ...
-	streamRt   http.RoundTripper // 传输小数据量、频繁的消息
-	pipelineRt http.RoundTripper // 传输数据量大、频率低的逻辑
+	streamRt   http.RoundTripper // transmit small, frequent messages
+	pipelineRt http.RoundTripper // transmits large data with low frequency
 
 	mu      sync.RWMutex         // protect the remote and peer map
 	remotes map[types.ID]*remote // remotes map that helps newly joined member to catch up
 	peers   map[types.ID]Peer    // peers map
 
-	// 心跳探测
+	// Heartbeat detection
 	pipelineProber probing.Prober
 	streamProber   probing.Prober
 }
 ```
 
-整体主要结构关系如下图：  
+The overall main structural relationship is as follows:    
 ![etcd-interface-relation](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/etcd/raft/etcd-interface-struct.png)
-可以看到，每个```peer```结构又内嵌了```raftNode```节点，通过```raftNode```连接了底层的日志结构、文件目录，如```MemoryStorage```，```wal```等，存储层解决的问题是通过返回相应的日志下标，结合raft对日志树多版本数据进行查询、更新。
-关于底层存储将在本系列下一篇展开:)  
+It can be seen that each ```peer``` structure has a ```raftNode``` node embedded in it, and the underlying log structure and file directory are connected through ```raftNode```, such as ```MemoryStorage```, ```wal```, etc. The problem solved by the storage layer is to query and update the multi-version data of the log tree by returning the corresponding log subscript and combining with raft.  
+About the underlying storage will be expanded in the next part of this series :)
 
-这里我们主要分析```transport```，```transport```在```Handler()```函数进行统一注册，
+Here we mainly analyze ```transport```, ```transport``` is registered in the ```Handler()``` function,
 ```go
 func (t *Transport) Handler() http.Handler {
 	pipelineHandler := newPipelineHandler(t, t.Raft, t.ClusterID)
@@ -317,7 +319,9 @@ func (h *httpHealth) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	e.Encode(health)
 }
 ```
-Remember the ```Transport``` interface mentioned above, it is used to maintain raft member changes, and the ```AddPeer()``` and ```UpdatePeer()``` sub-functions will create a new protocol The process performs periodic heartbeat detection on the cluster list
+Remember the ```Transport``` interface mentioned above, it is used to maintain raft member changes, and the ```AddPeer()``` and ```UpdatePeer()``` sub-functions will create a new protocol.  
+
+ The process performs periodic heartbeat detection on the cluster list:
 ![prober-check](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/etcd/raft/etcd-prober-check.png)
 ```go
 func (p *prober) AddHTTP(id string, probingInterval time.Duration, endpoints []string) error {
@@ -365,7 +369,8 @@ func (p *prober) AddHTTP(id string, probingInterval time.Duration, endpoints []s
 
 
 ## Summary
-The above is etcd's implementation of the functions of each module. etcd implements the implementation module layer by layer from the network layer - raft state - log storage layer through layered architecture design. If you are interested, you can choose to cut in from a certain level of code follow the drawing above. The next article will talk about the underlying storage of etcd:)
+The above is etcd's implementation of the functions of each module. etcd implements the implementation module layer by layer from the network layer - raft state - log storage layer through layered architecture design.  
+If you are interested, you can choose to cut in from a certain level of code follow the drawing above. The next article will talk about the underlying storage of etcd:)
 
 ## Reference link
 - 《HTTP/2 in Action》
