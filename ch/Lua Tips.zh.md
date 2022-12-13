@@ -8,7 +8,7 @@ categories:
 - Lua
 - gateway
 tags:
-- Nginx
+- NGINX
 - OpenResty
 - LuaJIT
 
