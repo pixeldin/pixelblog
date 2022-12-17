@@ -8,7 +8,7 @@ categories:
 - Lua
 - gateway
 tags:
-- Nginx
+- NGINX
 - OpenResty
 - LuaJIT
 
@@ -88,6 +88,85 @@ core.log.info("# Pixel-debug table content: ".. inspect(table))
 。
 > 
 
+## 元表
+
+元方法的重载`__tostring`\`__index`\`__call`
+
+```lua
+local version = {
+   major = 1,
+	minor = 1,
+	patch = 1
+}
+
+version = setmetatable(version, {
+	__tostring = function(t)
+		return string.format("%d.%d.%d", t.major, t.minor, t.patch)
+	end
+})
+print(tostring(version))
+```
+
+## 面向对象
+```lua
+-- Meta class
+Shape = {area = 0}
+-- 基础类方法 new
+function Shape:new (o,side)
+   o = o or {}
+   setmetatable(o, self)
+   self.__index = self
+   side = side or 0
+   self.area = side*side;
+   return o
+end
+-- 基础类方法 printArea
+function Shape:printArea ()
+   print("面积为 ",self.area)
+end
+
+-- 创建对象
+myshape = Shape:new(nil,10)
+myshape:printArea()
+
+Square = Shape:new()
+-- 派生类方法 new
+function Square:new (o,side)
+   o = o or Shape:new(o,side)
+   setmetatable(o, self)
+   self.__index = self
+   return o
+end
+
+-- 派生类方法 printArea
+function Square:printArea ()
+   print("正方形面积为 ",self.area)
+end
+
+-- 创建对象
+mysquare = Square:new(nil,10)
+mysquare:printArea()
+
+Rectangle = Shape:new()
+-- 派生类方法 new
+function Rectangle:new (o,length,breadth)
+   o = o or Shape:new(o)
+   setmetatable(o, self)
+   self.__index = self
+   self.area = length * breadth
+   return o
+end
+
+-- 派生类方法 printArea
+function Rectangle:printArea ()
+   print("矩形面积为 ",self.area)
+end
+
+-- 创建对象
+myrectangle = Rectangle:new(nil,10,20)
+myrectangle:printArea()
+```
+
 ## 函数
 
 - 参数传递：默认传值, `table`类型：**传引用**
@@ -111,6 +190,8 @@ core.log.info("# Pixel-debug table content: ".. inspect(table))
 - **Openresty最佳实践**  
 https://github.com/moonbingbing/openresty-best-practices/  
 - **《Lua程序设计》**  
+- **Lua教程**  
+https://www.runoob.com/lua/lua-object-oriented.html  
 - **LuaJIT Introduce**  
   - https://www.jianshu.com/p/0f968605d36d  
   - https://www.youtube.com/watch?v=p4AzAaJ8Ick  
