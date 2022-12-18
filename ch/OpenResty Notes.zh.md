@@ -144,6 +144,15 @@ OpenResty衍生的非空：`ngx.null`、`cdata:NULL`、`cjson.null`
 
 - 预分配table大小，避免插入元素再自增
 - table插入使用下标，尽量避免#获取table长度`t[#t + 1]`
+- 使用`table.clear`清空复用`table`,可以配合`tablepool`使用
+
+## 性能监控
+- 断点、日志
+- 动态追踪、调试
+- Systemtap
+- 火焰图
+  - 横坐标：CPU分配时间占比
+  - 纵坐标：函数栈深度
 
 ## 🔗参考资料
 
