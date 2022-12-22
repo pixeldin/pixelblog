@@ -154,10 +154,23 @@ OpenResty衍生的非空：`ngx.null`、`cdata:NULL`、`cjson.null`
   - 横坐标：CPU分配时间占比
   - 纵坐标：函数栈深度
 
+## 动态
+
+### 动态调试
+基于动态语言的`hook`模块进行debug
+
+### 动态加载
+> 动态，指的是程序可以在运行时、在不重新加载的情况下，去修改参数、配置，乃至修改自身的代码。OpenResty是通过脚本语言Lua来完成的⸺脚本语言的一大优势，便是运行时可以去做动态地改变。
+> 
+
+### 动态上游(`ngx.balancer`)
+被动+主动健康监测
+
 ## 🔗参考资料
 
-[简书：LuaJit](https://www.jianshu.com/p/0f968605d36d)
+[简书：LuaJit](https://www.jianshu.com/p/0f968605d36d)  
 
+[Apisix动态调试](https://apisix.apache.org/zh/blog/2022/08/19/apache-apisix-runtime-dynamic-debugging/)  
 
 [The price of speed: Lua or LuaJIT? Etiene Dalcol - London Lua August 2017](https://www.youtube.com/watch?v=p4AzAaJ8Ick)
 

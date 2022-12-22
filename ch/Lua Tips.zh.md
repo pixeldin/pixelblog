@@ -176,6 +176,25 @@ myrectangle:printArea()
     > 
 - 返回值，函数有多个返回值可以**用括号来表示只取第一个值，但是只能解释执行。**
 
+## 弱表
+
+```lua
+-- __mode的值是 k\v，那就意味着这个table的键\值为弱引用
+setmetatable(tb, {__mode = "v})
+```
+
+通过弱表声明可以避免垃圾回收泄漏未引用对象。
+
+## 模块
+
+### [String](https://moonbingbing.gitbooks.io/openresty-best-practices/content/lua/string_library.html)
+
+> 由于 `string.byte` 只返回整数，而并不像 `string.sub` 等函数那样（尝试）创建新的 Lua 字符串， 因此使用 `string.byte` 来进行字符串相关的扫描和分析是最为高效的，尤其是在被 LuaJIT 2 所 JIT 编译之后。
+> 
+
+## LuaRocks
+包管理工具
+
 ### String
 
 > 由于 `string.byte` 只返回整数，而并不像 `string.sub` 等函数那样（尝试）创建新的 Lua 字符串， 因此使用 `string.byte` 来进行字符串相关的扫描和分析是最为高效的，尤其是在被 LuaJIT 2 所 JIT 编译之后。
