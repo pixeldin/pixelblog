@@ -102,7 +102,7 @@ root@pixelpig:/usr/local/openresty# resty -j v -e 'for i=1, 1000 do
 ### 数据共享
 
 - 共享变量：`$val` 仅支持字符串
-- ngx.ctx: 在同一个请求共享，**随请求结束销毁**
+- ngx.ctx: 在同一个请求共享，**随请求结束销毁，如果发生重定向，则会丢失**，可以借鉴开源库[lua-resty-ctxdump](https://github.com/tokers/lua-resty-ctxdump/blob/master/README.md)
 - 使用模块变量，在相同的woker内部共享，但是**要避免写，防止竞争问题**
 - 共享字典`shared dict` 可以在多个woker共享，性能高，只支持字符串，需要预配置
     
@@ -128,6 +128,21 @@ OpenResty衍生的非空：`ngx.null`、`cdata:NULL`、`cjson.null`
 `ulimit -n:` 一个进程可以打开的文件数量
 
 ## 性能概要
+
+### 资源分析
+- top
+- pidstat
+- vmstat
+- iostat
+- sar  
+> USE(utilization\saturation\errors)
+
+### 负载分析
+- perf
+- systemtap
+- bcc/ebpf
+- 火焰图
+
 
 ### 避免阻塞操作
 
