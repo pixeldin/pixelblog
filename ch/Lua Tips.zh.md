@@ -214,3 +214,5 @@ https://www.runoob.com/lua/lua-object-oriented.html
 - **LuaJIT Introduce**  
   - https://www.jianshu.com/p/0f968605d36d  
   - https://www.youtube.com/watch?v=p4AzAaJ8Ick  
+- **Lua编程技巧**  
+https://blog.codingnow.com/cloud/Luatips  
