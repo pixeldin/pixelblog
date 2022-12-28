@@ -2,8 +2,6 @@
 title: "Lua Basic Tip"
 date: 2022-11-02
 thumbnailImagePosition: right
-<!-- thumbnailImage: /img/go-context.jpg -->
-thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/Lua/glue.png
 categories:
 - Lua
 - gateway
