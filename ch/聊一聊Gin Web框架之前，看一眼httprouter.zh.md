@@ -1,9 +1,6 @@
 ---
 title: "聊一聊Gin Web框架之前，看一眼httprouter"
 date: 2020-06-16
-thumbnailImagePosition: left
-<!-- thumbnailImage: /img/go-context.jpg -->
-thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/go-context.jpg
 categories:
 - Go
 - 网络编程

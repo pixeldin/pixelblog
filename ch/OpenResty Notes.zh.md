@@ -2,8 +2,6 @@
 title: "OpenResty Notes"
 date: 2022-11-13
 thumbnailImagePosition: right
-<!-- thumbnailImage: /img/go-context.jpg -->
-thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/Lua/openresty/bird.png
 categories:
 - Lua
 - gateway

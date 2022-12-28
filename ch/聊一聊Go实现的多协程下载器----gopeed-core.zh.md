@@ -1,9 +1,6 @@
 ---
 title: "聊一聊Go实现的多协程下载器: gopeed-core"
 date: 2021-06-29
-thumbnailImagePosition: left
-<!-- thumbnailImage: /img/go-context.jpg -->
-thumbnailImage: https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/wood-chunk.jpg
 categories:
 - Go
 - 并发
