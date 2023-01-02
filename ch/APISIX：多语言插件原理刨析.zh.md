@@ -19,6 +19,11 @@ APISIX在以Lua语言为背景开发出插件库，除此之外还支持其他�
 ## 前言
 
 ## 原理刨析
+### 进程间通信(IPC)
+### Plugin Runner
+- `APISIX_LISTEN_ADDRESS`
+
+
 
 ## 语言对比
 
