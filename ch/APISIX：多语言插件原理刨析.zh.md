@@ -20,8 +20,17 @@ APISIX在以Lua语言为背景开发出插件库，除此之外还支持其他�
 
 ## 原理刨析
 ### 进程间通信(IPC)
+Socket，作为内核中的一个套接字结构体，可用于进程间通信。
 ### Plugin Runner
-- `APISIX_LISTEN_ADDRESS`
+- 使用`APISIX_LISTEN_ADDRESS`指定生成`socket`接口的目录，提供用于插件进行外部通信，如不指定，在`UnitTest`模式下会在默认目录生成：
+  ```
+  root@pixelpig:~/work/apisix# ll t/servroot/html/
+  total 0
+  drwxr-xr-x 1 root root 512 Jan  3 18:05 ./
+  drwxr-xr-x 1 root root 512 Jan  3 18:05 ../
+  -rw-r--r-- 1 root root  72 Jan  3 18:05 index.html
+  srw-rw-rw- 1 root root   0 Jan  3 18:05 nginx.sock=
+  ```
 
 
 
