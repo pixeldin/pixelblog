@@ -19,6 +19,7 @@ APISIX在以Lua语言为背景开发出插件库，除此之外还支持其他�
 ## 前言
 
 ## 原理刨析
+> Apache APISIX 会把 plugin runner 作为自己的一个子进程
 ### 进程间通信(IPC)
 Socket，作为内核中的一个套接字结构体，可用于进程间通信。
 ### Plugin Runner
