@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="GVZY7AuQiqxXfrJP_eS6" name="第 1 页">
-        <mxGraphModel dx="1516" dy="-810" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="1">
+        <mxGraphModel dx="1518" dy="-762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="1">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -557,13 +557,16 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="2" value="&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;fontSize=22;strokeWidth=2;fillColor=#FFD966;sketch=1;fillWeight=-1;hachureGap=8;fillStyle=solid;strokeColor=#0e8088;rounded=1;shadow=1;" vertex="1" parent="1">
+                <mxCell id="2" value="&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;fontSize=22;strokeWidth=2;fillColor=#FFD966;sketch=1;fillWeight=-1;hachureGap=8;fillStyle=solid;strokeColor=#0e8088;rounded=1;shadow=1;" parent="1" vertex="1">
                     <mxGeometry x="-230" y="3690" width="200" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="6" value="&lt;b style=&quot;color: rgb(234 , 107 , 102)&quot;&gt;&lt;font color=&quot;#ff3333&quot;&gt;APISIX&lt;/font&gt;&lt;/b&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=21;fontFamily=Comic Sans MS;fontColor=#4D4D4D;labelBackgroundColor=none;fontStyle=0" vertex="1" connectable="0" parent="1">
+                <mxCell id="6" value="&lt;b style=&quot;color: rgb(234 , 107 , 102)&quot;&gt;&lt;font color=&quot;#ff3333&quot;&gt;APISIX&lt;/font&gt;&lt;/b&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=21;fontFamily=Comic Sans MS;fontColor=#4D4D4D;labelBackgroundColor=none;fontStyle=0" parent="1" vertex="1" connectable="0">
                     <mxGeometry x="-121" y="3720" as="geometry">
                         <mxPoint x="-15" y="5" as="offset"/>
                     </mxGeometry>
+                </mxCell>
+                <mxCell id="7" value="P1" style="whiteSpace=wrap;html=1;fontSize=20;strokeWidth=2;fillColor=#66B2FF;sketch=1;fillWeight=-1;hachureGap=8;fillStyle=solid;strokeColor=#0e8088;" vertex="1" parent="1">
+                    <mxGeometry x="-60" y="2170" width="58" height="58" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

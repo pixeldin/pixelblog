@@ -7,7 +7,6 @@ categories:
 - gateway
 tags:
 - NGINX
-- OpenResty
 - LuaJIT
 
 metaAlignment: center
