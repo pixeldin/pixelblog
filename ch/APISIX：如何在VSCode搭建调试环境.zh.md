@@ -18,8 +18,41 @@ metaAlignment: center
 
 # 前言
 
-# 原理刨析
-> Apache APISIX 会把 plugin runner 作为自己的一个子进程
+## Step0: precondition
+**前置条件：由于`APISIX`是基于`Lua5.1`+`LuaJIT`进行开发，所以在VSCode的集成Lua插件处需要设置默认运行Lua环境**  
+![LuaJIT with VSCode](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/Lua/debug/vscode-Lua-running-version.png)
+
+## Step1: debug plugin
+- 打开VSCode扩展程序，安装emmyLua插件  
+![recover](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/Lua/debug/vscode-emmyLua-pln.png)
+
+- 设置lanch.json配置项，参考官方手册
+  ```json
+  {
+      // 使用 IntelliSense 了解相关属性。 
+      // 悬停以查看现有属性的描述。
+      // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+      "version": "0.2.0",
+      "configurations": [
+          {
+              "type": "emmylua_new",
+              "request": "launch",
+              "name": "EmmyLua New Debug",
+              "host": "localhost",
+              // 此端口号需与程序监听一致
+              "port": 8172,
+              "ext": [
+                  ".lua",
+                  ".lua.txt",
+                  ".lua.bytes"
+              ],
+              "ideConnectDebugger": false
+          }
+      ]
+  }
+  ```
+## Step2: program run
+
 
 # 参考链接
 - **Openresty最佳实践**  
