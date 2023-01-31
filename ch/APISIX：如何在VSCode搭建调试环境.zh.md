@@ -51,11 +51,22 @@ metaAlignment: center
       ]
   }
   ```
-## Step2: program run
+## Step2: program init
+- 点击VSCode程序启动调试
+- 插入emmyLua代码片断
+    ```lua
+    package.cpath = package.cpath .. ";/home/pixeldin/.vscode/extensions/tangzx.emmylua-0.5.11/debugger/emmy/linux/emmy_core.so"
+    local dbg = require("emmy_core")
+    dbg.tcpConnect("localhost", 8172)
+    ```
+- 标记断点  
+![debug-in-vscode](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/Lua/debug/vscode-APISIX-debug-process.png)
+
+## Step3: Running with source code
+- 启动APISIX覆盖标记断点代码，观察堆栈信息和关注变量，(官方项目提供了很多单元测试文件，可以配合`test-nginx`的单元测试`perl`脚本运行)
+![debug-vscode-hit](https://pixelpig-1253685321.cos.ap-guangzhou.myqcloud.com/blog/Lua/debug/vscode-APISIX-debug-hit.png)
 
 
 # 参考链接
-- **Openresty最佳实践**  
+- **APISIX Runtime Debug/动态调试**  
 https://juejin.cn/post/6951650129044570125
-- **Lua编程技巧**  
-https://blog.codingnow.com/cloud/Luatips  
