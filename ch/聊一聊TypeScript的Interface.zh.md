@@ -1,6 +1,6 @@
 ---
 title: "聊一聊TypeScript的interface"
-date: 2023-02-04
+date: 2023-04-14
 thumbnailImagePosition: right
 categories:
 - FrontEnd
